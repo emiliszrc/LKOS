@@ -27,7 +27,7 @@ public class Login extends AppCompatActivity {
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                System.out.println("sudas");
+                System.out.println("veikia");
                 openMainActivity();
             }
         });
