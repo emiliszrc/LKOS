@@ -4,10 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.view.View;
+import com.example.Controllers.NetController;
+import com.example.Controllers.SharedPreferenceController;
+import com.example.Models.User;
+
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 public class Login extends AppCompatActivity {
 
@@ -27,7 +34,23 @@ public class Login extends AppCompatActivity {
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                System.out.println("veikia");
+                NetController AAA = new NetController();
+                String Username = username.getText().toString();
+                String Password = password.getText().toString();
+                Log.d (TAG, "Yes: " + Username);
+                Log.d (TAG, "Yes: " + Username);
+                User B = new User (Username, Password);
+                //SharedPreferenceController sharedPreferenceController = new SharedPreferenceController();
+                try {
+                    String A = AAA.getToken(B);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                // sharedPreferenceController.saveToken(A);
+
                 openMainActivity();
             }
         });
