@@ -1,13 +1,16 @@
 package com.example.lkos;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.view.View;
+
+import com.example.Controllers.NetController;
+import com.example.Models.User;
+import java.io.IOException;
 
 public class Login extends AppCompatActivity {
 
@@ -27,7 +30,13 @@ public class Login extends AppCompatActivity {
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                System.out.println("veikia");
+                NetController yes = new NetController();
+                User A = new User(username.getText().toString(),password.getText().toString());
+                try {
+                    yes.getToken(A);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 openMainActivity();
             }
         });

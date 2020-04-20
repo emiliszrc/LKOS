@@ -1,8 +1,11 @@
+ext {
+    compileSdkVersion = compileSdkVersion
+}
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion compileSdkVersion
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "com.example.lkos"
@@ -32,4 +35,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
