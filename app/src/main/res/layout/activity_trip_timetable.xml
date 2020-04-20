@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    tools:context=".TripTimetable">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -12,15 +14,14 @@
         app:itemBackground="@color/colorPrimary"
         app:itemTextColor="@android:color/white"
         app:itemIconTint="@android:color/white"
-        app:menu="@menu/bottom_navigation"
+        app:menu="@menu/bottom_navigation" />
 
-        />
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tripTimetableLabel"
         android:layout_width="436dp"
         android:layout_height="40dp"
         android:gravity="center"
-        android:text="Schedule"
+        android:text="Trip Timetable"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:background="@color/colorPrimary"
@@ -29,22 +30,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-        <CalendarView
-            android:id="@+id/calendar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textView"
-    />
-
-    <TextView
-        android:id="@+id/textView2"
+    <SearchView
+        android:id="@+id/search_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_below="@id/calendar"
+        android:layout_height="40dp"
+        android:layout_below="@id/tripTimetableLabel"/>
+
+    <ListView
+        android:id="@+id/tripTimetableListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_bar"
         android:layout_above="@id/bottom_navigation"/>
 
 
 </RelativeLayout>
-

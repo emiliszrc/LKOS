@@ -9,13 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".Schedule"
-            android:parentActivityName=".Login"
-            />
-        <activity android:name=".TripList"
-            android:parentActivityName=".Login"
-            />
+        <activity android:name=".TripTimetable"
+            android:parentActivityName=".TripDetails"/>
+        <activity android:name=".Passengers"
+            android:parentActivityName=".TripDetails"/>
+        <activity
+            android:name=".TripDetails"
+            android:parentActivityName=".TripList" />
+        <activity
+            android:name=".Schedule"
+            android:parentActivityName=".Login" />
+        <activity
+            android:name=".TripList"
+            android:parentActivityName=".Login" />
         <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

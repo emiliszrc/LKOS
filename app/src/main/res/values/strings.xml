@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">LKOS</string>
+    <string name="select_all">Select All</string>
+    <string name="passengers">Passengers</string>
+    <string name="unselect_all">Unselect all</string>
 </resources>
