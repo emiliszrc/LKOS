@@ -10,12 +10,12 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 
+import com.example.Controllers.SharedPreferenceController;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView startDateTime, busNo, capacity, firstStopAdress, object, arrivalDateTime, accommodationTitle, upcomingAddress;
-
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         arrivalDateTime = (TextView) findViewById(R.id.arrivalDateTime);
         accommodationTitle = (TextView) findViewById(R.id.accommodation);
         upcomingAddress = (TextView) findViewById(R.id.upcomingAddress);
-
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
