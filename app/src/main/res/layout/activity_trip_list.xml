@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+   >
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/colorPrimary"
+        app:itemTextColor="@android:color/white"
+        app:itemIconTint="@android:color/white"
+        app:menu="@menu/bottom_navigation" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="436dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Trip List"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SearchView
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/textView"/>
+
+    <ListView
+        android:id="@+id/tripListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_bar"
+        android:layout_above="@id/bottom_navigation"/>
+
+</RelativeLayout>
