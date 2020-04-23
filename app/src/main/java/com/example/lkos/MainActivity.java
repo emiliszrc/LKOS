@@ -2,19 +2,33 @@ package com.example.lkos;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.example.Models.Trip;
+import com.example.Models.Object;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 
+import com.example.Controllers.DataController;
+import com.example.Controllers.NetController;
 import com.example.Controllers.SharedPreferenceController;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+import org.json.JSONException;
 
+import java.util.concurrent.ExecutionException;
+
+public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private NetController netController = new NetController();
+    private DataController dataController = new DataController();
     private TextView startDateTime, busNo, capacity, firstStopAdress, object, arrivalDateTime, accommodationTitle, upcomingAddress;
     @SuppressLint("WrongViewCast")
     @Override
@@ -34,6 +48,16 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_Activity);
+
+        pref = getSharedPreferences("APPDetails", Context.MODE_PRIVATE);
+        editor = pref.edit();
+
+        try {
+            Object object = dataController.parseObject(netController.getObjectById(pref.getString("token", null), 1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
