@@ -14,7 +14,7 @@ public class SharedPreferenceController extends AppCompatActivity {
     public void saveToken (String token){
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         editor = pref.edit();
-        if (editor.remove("token")!=null){
+        if (pref.getString("Token", "222")!=null){
             editor.remove("token");
             editor.putString("token","token");
         }

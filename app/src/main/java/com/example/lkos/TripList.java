@@ -1,10 +1,14 @@
 package com.example.lkos;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,23 +20,58 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 
+import com.example.Controllers.DataController;
+import com.example.Controllers.NetController;
+import com.example.Models.Trip;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 public class TripList extends AppCompatActivity implements AdapterView.OnItemClickListener {
-
+    private SharedPreferences pref;
+    private NetController netController = new NetController();
+    private DataController dataController = new DataController();
     ListView tripList;
-    String[] tripTitleArray = {"Trip title", "Trip title", "Trip title", "Trip title", "Trip title", "Trip title7"};
-    String[] dateFromArray = {"2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00"};
-    String[] dateToArray = {"2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00"};
-    String[] capacityArray = {"Capacity 20/30", "Capacity 20/30", "Capacity 20/30", "Capacity 20/30", "Capacity 20/30", "Capacity 20/30"};
-    String[] tripIdArray = {"Trip ID 7d89s6", "Trip ID 7d89s6", "Trip ID 7d89s6", "Trip ID 7d89s6", "Trip ID 7d89s6", "Trip ID 7d89s6"};
+    ArrayList<String> tripTitleArray = new ArrayList<>();// = {"Trip title", "Trip title", "Trip title", "Trip title", "Trip title", "Trip title7"};
+    ArrayList<String> dateFromArray = new ArrayList<>();// = {"2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00"};
+    ArrayList<String> dateToArray = new ArrayList<>();// = {"2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00"};
+    ArrayList<String> capacityArray = new ArrayList<>();// = {"Capacity 20/30", "Capacity 20/30", "Capacity 20/30", "Capacity 20/30", "Capacity 20/30", "Capacity 20/30"};
+    ArrayList<String> tripIdArray = new ArrayList<>();// = {"Trip ID 7d89s6", "Trip ID 7d89s6", "Trip ID 7d89s6", "Trip ID 7d89s6", "Trip ID 7d89s6", "Trip ID 7d89s6"};
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trip_list);
 
+        pref = getSharedPreferences("APPDetails", Context.MODE_PRIVATE);
+        try {
+            String Time;
+            ArrayList<Trip> trips = dataController.parseAllTrips
+                    (netController.getTrips(pref.getString("token", null)));
+            for (int i = 0; i<trips.size();i++){
+                tripTitleArray.add(trips.get(i).getTripTitle());
+                Time = trips.get(i).getStartDate().toString();
+                System.out.println("Time "+ Time);
+                Time = Time.substring(0, Time.length() - 13);
+                Time = Time.replace("T"," ");
+                dateFromArray.add(Time);
+                Time = trips.get(i).getEndDate().toString();
+                Time = Time.substring(0, Time.length() - 13);
+                Time = Time.replace("T"," ");
+                dateToArray.add(Time);
+                capacityArray.add(String.valueOf(trips.get(i).getCapacity()));
+                tripIdArray.add(String.valueOf(trips.get(i).getTripId()));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setContentView(R.layout.activity_trip_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_Trips);
@@ -40,8 +79,10 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
         tripList = findViewById(R.id.tripListView);
         final CustomAdapter customAdapter = new CustomAdapter();
         tripList.setAdapter(customAdapter);
-
         tripList.setOnItemClickListener(this);
+
+
+
 
         SearchView searchView = (SearchView)findViewById(R.id.search_bar);
         searchView.setQueryHint("Search here!");
@@ -99,7 +140,7 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
     class CustomAdapter extends BaseAdapter{
         @Override
         public int getCount(){
-            return tripTitleArray.length;
+            return tripTitleArray.size();
         }
 
         @Override
@@ -121,13 +162,13 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
             TextView dateFrom = (TextView)convertView.findViewById(R.id.dateFrom);
             TextView dateTo = (TextView)convertView.findViewById(R.id.dateTo);
             TextView capacity = (TextView)convertView.findViewById(R.id.capacity);
-            TextView tripId = (TextView)convertView.findViewById(R.id.tripTitle);
+            TextView tripId = (TextView)convertView.findViewById(R.id.tripId);
 
-            tripTitle.setText(tripTitleArray[i]);
-            dateFrom.setText(dateFromArray[i]);
-            dateTo.setText(dateToArray[i]);
-            capacity.setText(capacityArray[i]);
-            tripId.setText(tripIdArray[i]);
+            tripTitle.setText(tripTitleArray.get(i));
+            dateFrom.setText(dateFromArray.get(i));
+            dateTo.setText(dateToArray.get(i));
+            capacity.setText(capacityArray.get(i));
+            tripId.setText(tripIdArray.get(i));
 
 
             return convertView;
