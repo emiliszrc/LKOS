@@ -75,10 +75,10 @@ public class NetController extends AsyncTask<String, String, String> {
                 os.write(jsonObject.toString().getBytes("UTF-8"));
                 os.close();
             }
-            //Log.d (TAG, "Yes: "+ url);
-            //Log.d (TAG, "Yes: "+ strings[2]);
-            //Log.d (TAG, "Yes: "+conn.getResponseCode());
-            //Log.d (TAG, "Yes: "+strings[1]);
+            Log.d (TAG, "Yes: "+ url);
+            Log.d (TAG, "Yes: "+ strings[2]);
+            Log.d (TAG, "Yes: "+conn.getResponseCode());
+            Log.d (TAG, "Yes: "+strings[1]);
             if (conn.getResponseCode() == HttpsURLConnection.HTTP_OK) {
                 InputStream ip = conn.getInputStream();
                 BufferedReader br1 =
@@ -89,11 +89,16 @@ public class NetController extends AsyncTask<String, String, String> {
                     response.append(responseSingle);
                 }
                 String ReturnValue = response.toString();
+                ip.close();
                 conn.disconnect();
                 if(strings[0]=="/token") {
-                    JSONObject Reponse = new JSONObject(ReturnValue);
-                    return Reponse.getString("tokenString");
+                    JSONObject Response = new JSONObject(ReturnValue);
+                    String Token = Response.getString("tokenString");
+                    System.out.println("YSUDAGJUDSAGDSA");
+                    System.out.println(Token);
+                    return Token;
                 }
+
                 return ReturnValue;
             }
         } catch (Exception e) {
@@ -115,27 +120,27 @@ public class NetController extends AsyncTask<String, String, String> {
     }
     public String getTripById (String token, int id) throws ExecutionException, InterruptedException {
         Gson gson = new Gson();
-        Request = "GET"; Body = token; Context = "/trip/";
+        Request = "GET"; Body = token; Context = "/trips/"+Integer.toString(id);
         NetController getRequest = new NetController();
         //Perform the doInBackground method, passing in our url
-        String result = getRequest.execute(Context+Integer.toString(id), Request, Body).get();
+        String result = getRequest.execute(Context, Request, Body).get();
         if (result!="nepaejo")
             return result;
         return "Unable to retrieve data";
     }
     public String getObjectById (String token, int id) throws ExecutionException, InterruptedException {
         Gson gson = new Gson();
-        Request = "GET"; Body = gson.toJson(token); Context = "/object/";
+        Request = "GET"; Body = token; Context = "/object/"+Integer.toString(id);
         NetController getRequest = new NetController();
         //Perform the doInBackground method, passing in our url
-        String result = getRequest.execute(Context+Integer.toString(id), Request, token).get();
+        String result = getRequest.execute(Context, Request, token).get();
         if (result!="nepaejo")
             return result;
         return "Unable to retrieve data";
     }
     public String getObjects (String token) throws ExecutionException, InterruptedException {
         Gson gson = new Gson();
-        Request = "GET"; Body = gson.toJson(token); Context = "/object/";
+        Request = "GET"; Body = token; Context = "/object/";
         NetController getRequest = new NetController();
         //Perform the doInBackground method, passing in our url
         String result = getRequest.execute(Context, Request, Body).get();
@@ -145,7 +150,18 @@ public class NetController extends AsyncTask<String, String, String> {
     }
     public String getTrips (String token) throws ExecutionException, InterruptedException {
         Gson gson = new Gson();
-        Request = "GET"; Body = gson.toJson(token); Context = "/trip";
+        Request = "GET"; Body = token; Context = "/trips";
+        NetController getRequest = new NetController();
+        //Perform the doInBackground method, passing in our url
+        String result = getRequest.execute(Context, Request, Body).get();
+        if (result!="nepaejo")
+            return result;
+        return "Unable to retrieve data";
+    }
+
+    public String getObjectsForTrip (String token, int id) throws ExecutionException, InterruptedException {
+        Gson gson = new Gson();
+        Request = "GET"; Body = token; Context = "/trips/"+Integer.toString(id)+"/objects";
         NetController getRequest = new NetController();
         //Perform the doInBackground method, passing in our url
         String result = getRequest.execute(Context, Request, Body).get();

@@ -58,11 +58,7 @@ public class Login extends AppCompatActivity {
         startActivity(intent);
     }
     public void saveToken (String token){
-        if (editor.remove("token")!=null){
-            editor.remove("token");
             editor.putString("token",token);
-        }
-
         editor.commit();
     }
     public String returnToken(){
