@@ -23,22 +23,22 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
     private NetController netController = new NetController();
     private DataController dataController = new DataController();
-    private TextView startDateTime, busNo, capacity, firstStopAdress, object, arrivalDateTime, accommodationTitle, upcomingAddress;
+    private TextView startDateTime, busNo, capacity, firstStopAdress, object, arrivalDateTime, accommodationTitle, upcomingAddress, tvDestination;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        tvDestination = (TextView) findViewById(R.id.tvDestination);
         startDateTime = (TextView) findViewById(R.id.startDateTime);
         busNo = (TextView) findViewById(R.id.busNr);
         capacity = (TextView) findViewById(R.id.capacity);
@@ -52,13 +52,26 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_Activity);
         pref = getSharedPreferences("APPDetails", Context.MODE_PRIVATE);
-        editor = pref.edit();
 
         try {
-           Trip FirstTrip = dataController.parseAllTrips(netController.getTrips(pref.getString("token",null))).get(1);
+           Trip FirstTrip = dataController.parseAllTrips(netController.getTrips
+                   (pref.getString("token",null))).get(1);
            System.out.println(FirstTrip.getCapacity());
+           ArrayList<Object> accommodation = dataController.parseAccomodationObjectsForTrip
+                   (netController.getObjectsForTrip(pref.getString("token",null)
+                           ,FirstTrip.getTripId()));
+            ArrayList<Object> objects = dataController.parseActualObjectsForTrip
+                    (netController.getObjectsForTrip(pref.getString("token",null)
+                            ,FirstTrip.getTripId()));
+            tvDestination.setText(FirstTrip.getTripTitle());
            capacity.setText(String.valueOf(FirstTrip.getCapacity()));
-
+           String StartTime = FirstTrip.getStartDate().toString();
+           StartTime = StartTime.replace("T"," ");
+           startDateTime.setText(StartTime.substring(0, StartTime.length() - 13));
+           firstStopAdress.setText(objects.get(0).getObjectAddress());
+           object.setText(objects.get(0).getObjectTitle());
+            accommodationTitle.setText(accommodation.get(0).getObjectTitle());
+            upcomingAddress.setText(accommodation.get(0).getObjectAddress());
         } catch (Exception e) {
             e.printStackTrace();
         }

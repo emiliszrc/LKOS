@@ -1,5 +1,7 @@
 package com.example.Models;
 
+import org.joda.time.DateTime;
+
 public class Object {
 
     private int objectType;
@@ -7,13 +9,17 @@ public class Object {
     private String objectTitle;
     private String objectAddress;
 
-    public Object (int id, int type, String title, String address){
+    public Object ( int id, int type, String title, String address){
         this.objectId=id;
         this.objectAddress=address;
         this.objectType=type;
         this.objectTitle=title;
     }
-
+    public Object (int type, String title, String address){
+        this.objectAddress=address;
+        this.objectType=type;
+        this.objectTitle=title;
+    }
     public int getObjectType() {
         return objectType;
     }
@@ -29,4 +35,5 @@ public class Object {
     public String getObjectAddress() {
         return objectAddress;
     }
+
 }

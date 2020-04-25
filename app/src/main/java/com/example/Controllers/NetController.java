@@ -56,8 +56,6 @@ public class NetController extends AsyncTask<String, String, String> {
             if(strings[0]!="/token"){
                 conn.setDoOutput(false);
                 conn.addRequestProperty("Authorization","Bearer " + strings[2]);
-                Log.d (TAG, "Yes: "+ strings[2]);
-                System.out.println(strings[2]);
             }
             else {
                 conn.setDoOutput(true);
@@ -75,10 +73,7 @@ public class NetController extends AsyncTask<String, String, String> {
                 os.write(jsonObject.toString().getBytes("UTF-8"));
                 os.close();
             }
-            Log.d (TAG, "Yes: "+ url);
-            Log.d (TAG, "Yes: "+ strings[2]);
             Log.d (TAG, "Yes: "+conn.getResponseCode());
-            Log.d (TAG, "Yes: "+strings[1]);
             if (conn.getResponseCode() == HttpsURLConnection.HTTP_OK) {
                 InputStream ip = conn.getInputStream();
                 BufferedReader br1 =
@@ -94,8 +89,6 @@ public class NetController extends AsyncTask<String, String, String> {
                 if(strings[0]=="/token") {
                     JSONObject Response = new JSONObject(ReturnValue);
                     String Token = Response.getString("tokenString");
-                    System.out.println("YSUDAGJUDSAGDSA");
-                    System.out.println(Token);
                     return Token;
                 }
 
@@ -156,6 +149,7 @@ public class NetController extends AsyncTask<String, String, String> {
         String result = getRequest.execute(Context, Request, Body).get();
         if (result!="nepaejo")
             return result;
+        System.out.println("nepaejo");
         return "Unable to retrieve data";
     }
 
