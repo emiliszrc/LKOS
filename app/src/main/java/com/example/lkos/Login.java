@@ -2,8 +2,11 @@ package com.example.lkos;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,35 +25,30 @@ public class Login extends AppCompatActivity {
     private Button loginButton;
     private TextView logo;
     private static final String TAG = Login.class.getSimpleName();
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private NetController netController = new NetController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         username = (EditText)findViewById(R.id.etUsername);
         password = (EditText)findViewById(R.id.etPassword);
         loginButton = (Button)findViewById(R.id.loginButton);
-
+        pref = getSharedPreferences("APPDetails", Context.MODE_PRIVATE);
+        editor = pref.edit();
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                NetController AAA = new NetController();
-                String Username = username.getText().toString();
-                String Password = password.getText().toString();
-                Log.d (TAG, "Yes: " + Username);
-                Log.d (TAG, "Yes: " + Username);
-                User B = new User (Username, Password);
-                //SharedPreferenceController sharedPreferenceController = new SharedPreferenceController();
+                User AttemptToLogin = new User (username.getText().toString(), password.getText().toString());
                 try {
-                    String A = AAA.getToken(B);
+                    String A = netController.getToken(AttemptToLogin);
+                    saveToken(A);
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-                // sharedPreferenceController.saveToken(A);
-
                 openMainActivity();
             }
         });
@@ -59,5 +57,18 @@ public class Login extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+    public void saveToken (String token){
+        if (editor.remove("token")!=null){
+            editor.remove("token");
+            editor.putString("token",token);
+        }
 
+        editor.commit();
+    }
+    public String returnToken(){
+        String token = pref.getString("token", null);
+        if (token ==null)
+            return "This bitch empty";
+        return token;
+    }
 }
