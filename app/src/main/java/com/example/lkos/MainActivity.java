@@ -1,6 +1,7 @@
 package com.example.lkos;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.Models.Trip;
 import com.example.Models.Object;
@@ -8,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private NetController netController = new NetController();
     private DataController dataController = new DataController();
     private TextView startDateTime, busNo, capacity, firstStopAdress, object, arrivalDateTime, accommodationTitle, upcomingAddress;
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +51,14 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_Activity);
-
         pref = getSharedPreferences("APPDetails", Context.MODE_PRIVATE);
         editor = pref.edit();
 
         try {
-            Object object = dataController.parseObject(netController.getObjectById(pref.getString("token", null), 1));
+           Trip FirstTrip = dataController.parseAllTrips(netController.getTrips(pref.getString("token",null))).get(1);
+           System.out.println(FirstTrip.getCapacity());
+           capacity.setText(String.valueOf(FirstTrip.getCapacity()));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
