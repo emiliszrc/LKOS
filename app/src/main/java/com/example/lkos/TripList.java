@@ -53,10 +53,8 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
             String Time;
             ArrayList<Trip> trips = dataController.parseAllTrips
                     (netController.getTrips(pref.getString("token", null)));
-            System.out.println("Time "+ trips.size());
             for (int i = 0; i<trips.size();i++){
                 tripTitleArray.add(trips.get(i).getTripTitle());
-                System.out.println(tripTitleArray.get(i));
                 Time = trips.get(i).getStartDate().toString();
                 System.out.println("Time "+ Time);
                 Time = Time.substring(0, Time.length() - 13);

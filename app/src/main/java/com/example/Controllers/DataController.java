@@ -36,9 +36,7 @@ public class DataController {
             int Capacity  = Integer.parseInt(json.getString("capacity"));
             Trip temp = new Trip(TripId,TripTitle, StartDate, EndDate, tripType, TripDescription, Capacity);
             trips.add(temp);
-            System.out.println(TripTitle);
         }
-        System.out.println(trips.size());
         return trips;
     }
 
