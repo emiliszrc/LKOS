@@ -1,40 +1,60 @@
 package com.example.lkos;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import com.example.Models.Object;
+import com.example.Controllers.DataController;
+import com.example.Controllers.NetController;
+
+import com.example.Models.Trip;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class TripTimetable extends AppCompatActivity {
+import java.util.ArrayList;
 
+public class TripTimetable extends AppCompatActivity {
+    private SharedPreferences pref;
+    private NetController netController = new NetController();
+    private DataController dataController = new DataController();
+    private Button Search;
+    private EditText SearchText;
     ListView tripTimetableList;
-    String[] dateArray = {"June 6", "June 6", "June 6", "June 6", "June 6", "June 6"};
-    String[] timeArray = {"7:00 - 10:00","10:00 - 10:30", "11:00 - 12:00", "11:00 - 12:00", "11:00 - 12:00", "11:00 - 12:00"};
-    String[] activityArray = {"Departure to accommodation", "Free time", "Landmark visitation", "Landmark visitation", "Landmark visitation", "Landmark visitation"};
-    String[] objectAddressArray = {
-            "Hotel Runmis, Panevezio g. 8A, Vilnius",
-            "Hotel Runmis, Panevezio g. 8A, Vilnius",
-            "Kudirkos paminklas, Gedimino pr. 20, Vilnius",
-            "Kudirkos paminklas, Gedimino pr. 20, Vilnius",
-            "Kudirkos paminklas, Gedimino pr. 20, Vilnius",
-            "Kudirkos paminklas, Gedimino pr. 20, Vilnius"
-    };
+    ArrayList<String> dateArray = new ArrayList<>();// {"June 6", "June 6", "June 6", "June 6", "June 6", "June 6"};
+    ArrayList<String> timeArray = new ArrayList<>();//{"7:00 - 10:00","10:00 - 10:30", "11:00 - 12:00", "11:00 - 12:00", "11:00 - 12:00", "11:00 - 12:00"};
+    ArrayList<String> activityArray = new ArrayList<>();//{"Departure to accommodation", "Free time", "Landmark visitation", "Landmark visitation", "Landmark visitation", "Landmark visitation"};
+    ArrayList<String> objectAddressArray = new ArrayList<>();//
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_timetable);
+        SearchText = (EditText)findViewById(R.id.SearchField);
+        Search = (Button)findViewById(R.id.SearchButton);
+        pref = getSharedPreferences("APPDetails", Context.MODE_PRIVATE);
+        try {
+            ArrayList<Object> objects = dataController.parseAllObjectsForTrip
+                    (netController.getObjectsForTrip(pref.getString("token", null),pref.getInt("selectedTrip", 13)));
+            for (int i = 0; i<objects.size();i++){
+                activityArray.add(objects.get(i).getObjectTitle());
+                objectAddressArray.add(objects.get(i).getObjectAddress());
+            }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_Activity);
@@ -42,7 +62,30 @@ public class TripTimetable extends AppCompatActivity {
         tripTimetableList = findViewById(R.id.tripTimetableListView);
         final CustomAdapter customAdapter = new CustomAdapter();
         tripTimetableList.setAdapter(customAdapter);
-
+        Search.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String searchCriteria = SearchText.getText().toString();
+                try {
+                    String Time;
+                    ArrayList<Object> objects;
+                    activityArray.clear();
+                    objectAddressArray.clear();
+                    if (searchCriteria.equals(""))
+                        objects = dataController.parseAllObjectsForTrip
+                                (netController.getObjectsForTrip(pref.getString("token", null),pref.getInt("selectedTrip", 13)));
+                    else
+                        objects = dataController.parseAllObjects
+                                (netController.searchForObjects(pref.getString("token", null),searchCriteria));
+                    for (int i = 0; i<objects.size();i++){
+                        activityArray.add(objects.get(i).getObjectTitle());
+                        objectAddressArray.add(objects.get(i).getObjectAddress());
+                    }
+                    tripTimetableList.invalidateViews();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -71,7 +114,7 @@ public class TripTimetable extends AppCompatActivity {
     class CustomAdapter extends BaseAdapter {
         @Override
         public int getCount(){
-            return activityArray.length;
+            return activityArray.size();
         }
 
         @Override
@@ -94,10 +137,8 @@ public class TripTimetable extends AppCompatActivity {
             TextView activity = (TextView)convertView.findViewById(R.id.activityLabel);
             TextView objectAddress = (TextView)convertView.findViewById(R.id.objectAddressLabel);
 
-            date.setText(dateArray[i]);
-            time.setText(timeArray[i]);
-            activity.setText(activityArray[i]);
-            objectAddress.setText(objectAddressArray[i]);
+            activity.setText(activityArray.get(i));
+            objectAddress.setText(objectAddressArray.get(i));
 
             return convertView;
         }

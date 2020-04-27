@@ -1,22 +1,19 @@
 package com.example.lkos;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.Controllers.NetController;
-import com.example.Controllers.SharedPreferenceController;
 import com.example.Models.User;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 public class Login extends AppCompatActivity {

@@ -1,7 +1,5 @@
 package com.example.Models;
 
-import org.joda.time.DateTime;
-
 public class Object {
 
     private int objectType;

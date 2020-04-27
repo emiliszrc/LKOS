@@ -29,27 +29,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <SearchView
-        android:id="@+id/search_bar"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/SearchField"
+        android:layout_width="310dp"
         android:layout_height="40dp"
-        android:layout_below="@id/passengersLabel">
+        android:layout_below="@id/passengersLabel" />
 
-    </SearchView>
+    <Button
+        android:id="@+id/SearchButton"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/passengersLabel"
+        android:layout_alignParentRight="true"
+        android:text="Search" />
 
     <Button
         android:id="@+id/selectAll"
         android:layout_width="192dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/passengersLabel"
+        android:layout_below="@id/SearchField"
         android:text="@string/select_all" />
 
     <Button
         android:id="@+id/unselectAll"
         android:layout_width="201dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/passengersLabel"
+        android:layout_below="@id/SearchField"
         android:layout_alignLeft="@id/selectAll"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="210dp"

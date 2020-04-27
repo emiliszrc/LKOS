@@ -30,17 +30,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <SearchView
-        android:id="@+id/search_bar"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/SearchField"
+        android:layout_width="310dp"
         android:layout_height="40dp"
-        android:layout_below="@id/tripTimetableLabel"/>
+        android:layout_below="@id/tripTimetableLabel" />
+
+    <Button
+        android:id="@+id/SearchButton"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/tripTimetableLabel"
+        android:layout_alignParentRight="true"
+        android:text="Search" />
 
     <ListView
         android:id="@+id/tripTimetableListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/search_bar"
+        android:layout_below="@id/SearchField"
         android:layout_above="@id/bottom_navigation"/>
 
 

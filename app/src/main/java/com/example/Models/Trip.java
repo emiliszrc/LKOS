@@ -2,9 +2,6 @@ package com.example.Models;
 
 import org.joda.time.DateTime;
 
-import java.time.ZonedDateTime;
-import java.util.Date;
-
 public class Trip {
     private int tripId;
     private String tripTitle;
