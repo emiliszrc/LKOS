@@ -1,30 +1,25 @@
 package com.example.lkos;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.Models.Trip;
-import com.example.Models.Object;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.Controllers.DataController;
 import com.example.Controllers.NetController;
-import com.example.Controllers.SharedPreferenceController;
+import com.example.Models.Object;
+import com.example.Models.Trip;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
