@@ -60,18 +60,18 @@ public class MainActivity extends AppCompatActivity {
            ArrayList<Object> accommodation = dataController.parseAccomodationObjectsForTrip
                    (netController.getObjectsForTrip(pref.getString("token",null)
                            ,FirstTrip.getTripId()));
-            ArrayList<Object> objects = dataController.parseActualObjectsForTrip
+           ArrayList<Object> objects = dataController.parseActualObjectsForTrip
                     (netController.getObjectsForTrip(pref.getString("token",null)
                             ,FirstTrip.getTripId()));
-            tvDestination.setText(FirstTrip.getTripTitle());
+           tvDestination.setText(FirstTrip.getTripTitle());
            capacity.setText(String.valueOf(FirstTrip.getCapacity()));
            String StartTime = FirstTrip.getStartDate().toString();
            StartTime = StartTime.replace("T"," ");
            startDateTime.setText(StartTime.substring(0, StartTime.length() - 13));
            firstStopAdress.setText(objects.get(0).getObjectAddress());
            object.setText(objects.get(0).getObjectTitle());
-            accommodationTitle.setText(accommodation.get(0).getObjectTitle());
-            upcomingAddress.setText(accommodation.get(0).getObjectAddress());
+           accommodationTitle.setText(accommodation.get(0).getObjectTitle());
+           upcomingAddress.setText(accommodation.get(0).getObjectAddress());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -8,6 +8,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -72,7 +74,12 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
             e.printStackTrace();
         }
         setContentView(R.layout.activity_trip_list);
+        final Drawable logout = getResources().getDrawable(R.drawable.ic_exit_to_app);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //logout.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+       // getActionBar().setHomeAsUpIndicator(logout);
+
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_Trips);
 
@@ -131,9 +138,15 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
 
         //on trip click
 
+
         startActivity(new Intent(getApplicationContext()
                 , TripDetails.class));
         overridePendingTransition(0,0);
+
+        System.out.println("id " + position );
+
+
+
 
     }
 

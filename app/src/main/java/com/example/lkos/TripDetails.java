@@ -21,6 +21,7 @@ public class TripDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_details);
 
+
         passengerListButton = (Button)findViewById(R.id.passengerListButton);
         tripTimetableButton = (Button)findViewById(R.id.tripTimetableButton);
 
