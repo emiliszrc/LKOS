@@ -1,9 +1,15 @@
 package com.example.lkos;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,6 +20,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,7 +32,11 @@ import com.example.Controllers.NetController;
 import com.example.Models.Trip;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 public class TripList extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -70,8 +81,13 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        setContentView(R.layout.activity_trip_list);
+        final Drawable logout = getResources().getDrawable(R.drawable.ic_exit_to_app);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //logout.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+       // getActionBar().setHomeAsUpIndicator(logout);
+
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_Trips);
 
@@ -174,6 +190,11 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
         startActivity(new Intent(getApplicationContext()
                 , TripDetails.class));
         overridePendingTransition(0,0);
+
+        System.out.println("id " + position );
+
+
+
 
     }
 
