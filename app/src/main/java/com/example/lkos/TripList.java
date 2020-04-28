@@ -1,9 +1,5 @@
 package com.example.lkos;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -17,27 +13,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.Controllers.DataController;
 import com.example.Controllers.NetController;
 import com.example.Models.Trip;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 public class TripList extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private SharedPreferences pref;
     private NetController netController = new NetController();
     private DataController dataController = new DataController();
+    private Button Search;
+    private EditText SearchText;
     ListView tripList;
     ArrayList<String> tripTitleArray = new ArrayList<>();// = {"Trip title", "Trip title", "Trip title", "Trip title", "Trip title", "Trip title7"};
     ArrayList<String> dateFromArray = new ArrayList<>();// = {"2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00", "2020 00 00"};
@@ -49,7 +47,9 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_trip_list);
+        SearchText = (EditText)findViewById(R.id.SearchField);
+        Search = (Button)findViewById(R.id.SearchButton);
         pref = getSharedPreferences("APPDetails", Context.MODE_PRIVATE);
         try {
             String Time;
@@ -58,7 +58,6 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
             for (int i = 0; i<trips.size();i++){
                 tripTitleArray.add(trips.get(i).getTripTitle());
                 Time = trips.get(i).getStartDate().toString();
-                System.out.println("Time "+ Time);
                 Time = Time.substring(0, Time.length() - 13);
                 Time = Time.replace("T"," ");
                 dateFromArray.add(Time);
@@ -73,8 +72,10 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
         } catch (Exception e) {
             e.printStackTrace();
         }
+      
         setContentView(R.layout.activity_trip_list);
         final Drawable logout = getResources().getDrawable(R.drawable.ic_exit_to_app);
+      
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //logout.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
        // getActionBar().setHomeAsUpIndicator(logout);
@@ -87,10 +88,46 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
         final CustomAdapter customAdapter = new CustomAdapter();
         tripList.setAdapter(customAdapter);
         tripList.setOnItemClickListener(this);
+        Search.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String searchCriteria = SearchText.getText().toString();
+                try {
+                    String Time;
+                    ArrayList<Trip> trips;
+                    tripTitleArray.clear();
+                    dateFromArray.clear();
+                    dateToArray.clear();
+                    capacityArray.clear();
+                    tripIdArray.clear();
+                    if (searchCriteria.equals(""))
+                        trips = dataController.parseAllTrips
+                                (netController.getTrips(pref.getString("token", null)));
+                    else
+                    trips = dataController.parseAllTrips
+                            (netController.searchForTrips(pref.getString("token", null),searchCriteria));
+                    for (int i = 0; i<trips.size();i++){
+                        tripTitleArray.add(trips.get(i).getTripTitle());
+                        Time = trips.get(i).getStartDate().toString();
+                        Time = Time.substring(0, Time.length() - 13);
+                        Time = Time.replace("T"," ");
+                        dateFromArray.add(Time);
+                        Time = trips.get(i).getEndDate().toString();
+                        Time = Time.substring(0, Time.length() - 13);
+                        Time = Time.replace("T"," ");
+                        dateToArray.add(Time);
+                        capacityArray.add(String.valueOf(trips.get(i).getCapacity()));
+                        tripIdArray.add(String.valueOf(trips.get(i).getTripId()));
+                    }
+                    tripList.invalidateViews();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
 
-
-
+/*
         SearchView searchView = (SearchView)findViewById(R.id.search_bar);
         searchView.setQueryHint("Search here!");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -104,11 +141,14 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
 
                 if (newText != null && !newText.isEmpty()){
                     //turi isfiltruoti bet dar nzn kaip padaryti
-                }
+
+            }
 
                 return false;
             }
         });
+
+ */
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -136,9 +176,11 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        //on trip click
-
-
+        SharedPreferences.Editor editor;
+        editor = pref.edit();
+        editor.putInt("selectedTrip",Integer.parseInt(tripIdArray.get(position)));
+        editor.commit();
+      
         startActivity(new Intent(getApplicationContext()
                 , TripDetails.class));
         overridePendingTransition(0,0);

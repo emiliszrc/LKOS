@@ -32,17 +32,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <SearchView
-        android:id="@+id/search_bar"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@id/textView"/>
 
     <ListView
         android:id="@+id/tripListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/search_bar"
+        android:layout_below="@id/SearchField"
         android:layout_above="@id/bottom_navigation"/>
+
+    <EditText
+        android:id="@+id/SearchField"
+        android:layout_width="310dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/textView" />
+
+    <Button
+        android:id="@+id/SearchButton"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/textView"
+        android:layout_alignParentRight="true"
+        android:text="Search" />
 
 </RelativeLayout>
