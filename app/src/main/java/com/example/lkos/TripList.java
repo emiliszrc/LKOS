@@ -83,7 +83,7 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
         }
         setContentView(R.layout.activity_trip_list);
         final Drawable logout = getResources().getDrawable(R.drawable.ic_exit_to_app);
-        final Drawable logout = getResources().getDrawable(R.drawable.ic_exit_to_app);
+      //  final Drawable logout = getResources().getDrawable(R.drawable.ic_exit_to_app);
       
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //logout.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);

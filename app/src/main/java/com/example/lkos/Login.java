@@ -65,7 +65,7 @@ public class Login extends AppCompatActivity {
     public void openMainActivity(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        //komentaras
+
     }
     public void saveToken (String token){
             editor.putString("token",token);
