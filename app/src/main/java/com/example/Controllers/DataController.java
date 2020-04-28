@@ -105,8 +105,8 @@ public class DataController {
     }
     public Object parseObject (String data) throws JSONException {
         JSONObject json = new JSONObject(data);
-            int id = Integer.parseInt(json.getString("objectId"));
-            int type = Integer.parseInt(json.getString("objectType"));
+            int id = json.getInt("objectId");
+            int type = json.getInt("objectType");
             String title = json.getString("objectTitle");
             String address = json.getString("objectAddress");
             Object Object = new Object(id, type, title, address);
@@ -114,7 +114,7 @@ public class DataController {
     }
     public Trip parseTrip (String data) throws JSONException {
         JSONObject json = new JSONObject(data);
-        int TripId = Integer.parseInt(json.getString("tripId"));
+        int TripId = json.getInt("tripId");
         String TripTitle = json.getString("tripTitle");
         DateTime StartDate = DateTime.parse(json.getString("startDate"));
         DateTime EndDate = DateTime.parse(json.getString("endDate"));
