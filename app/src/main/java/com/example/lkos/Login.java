@@ -3,6 +3,7 @@ package com.example.lkos;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +21,7 @@ public class Login extends AppCompatActivity {
 
     private EditText username, password;
     private Button loginButton;
-    private TextView logo;
+    private TextView logo, errorText;
     private static final String TAG = Login.class.getSimpleName();
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -33,6 +34,7 @@ public class Login extends AppCompatActivity {
         username = (EditText)findViewById(R.id.etUsername);
         password = (EditText)findViewById(R.id.etPassword);
         loginButton = (Button)findViewById(R.id.loginButton);
+        errorText = (TextView)findViewById(R.id.errorText);
         pref = getSharedPreferences("APPDetails", Context.MODE_PRIVATE);
         editor = pref.edit();
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -41,12 +43,22 @@ public class Login extends AppCompatActivity {
                 try {
                     String A = netController.getToken(AttemptToLogin);
                     saveToken(A);
+                    if (A != "token"){
+                        openMainActivity();
+                        errorText.setText("");
+                    } else {
+                        errorText.setText("Incorrect username or password");
+                        errorText.setTextColor(Color.RED);
+                    }
+
+
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                openMainActivity();
+               // System.out.println(A);
+              //  openMainActivity();
             }
         });
     }

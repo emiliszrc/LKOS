@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,11 +25,20 @@ public class Passengers extends AppCompatActivity {
     String[] passengerSeats = {"Seat No. 23", "Seat No. 23", "Seat No. 23", "Seat No. 23", "Seat No. 23", "Seat No. 23"};
     String[] passengerPhoneNumbers = {"864356785", "864356785", "864356785", "864356785", "864356785", "864356785" };
     CheckBox checkBox;
+    boolean flag;
+    Button selectAll, unselectAll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+       // setContentView(R.layout.passengers_layout);
+       // checkBox = (CheckBox)findViewById(R.id.checkBox);
+
         setContentView(R.layout.activity_passengers);
+        selectAll = (Button)findViewById(R.id.selectAll);
+        unselectAll = (Button)findViewById(R.id.unselectAll);
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -37,6 +47,21 @@ public class Passengers extends AppCompatActivity {
         passengersList = findViewById(R.id.passengersListView);
         final CustomAdapter customAdapter = new CustomAdapter();
         passengersList.setAdapter(customAdapter);
+
+        selectAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flag = true;
+                customAdapter.notifyDataSetChanged();
+            }
+        });
+        unselectAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flag = false;
+                customAdapter.notifyDataSetChanged();
+            }
+        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -88,11 +113,15 @@ public class Passengers extends AppCompatActivity {
             TextView lastName = (TextView)convertView.findViewById(R.id.passengerLastName);
             TextView seatNo = (TextView)convertView.findViewById(R.id.passengerSeatNo);
             TextView phoneNumber = (TextView)convertView.findViewById(R.id.passengerPhoneNumber);
+            CheckBox checkBox = (CheckBox)convertView.findViewById(R.id.checkBox);
 
             name.setText(passengerNames[i]);
             lastName.setText(passengerLastNames[i]);
             seatNo.setText(passengerSeats[i]);
             phoneNumber.setText(passengerPhoneNumbers[i]);
+            if (flag==true){
+                checkBox.setChecked(true);
+            }
             return convertView;
         }
     }
