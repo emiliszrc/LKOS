@@ -81,7 +81,6 @@ public class TripList extends AppCompatActivity implements AdapterView.OnItemCli
         } catch (Exception e) {
             e.printStackTrace();
         }
-        setContentView(R.layout.activity_trip_list);
         final Drawable logout = getResources().getDrawable(R.drawable.ic_exit_to_app);
       //  final Drawable logout = getResources().getDrawable(R.drawable.ic_exit_to_app);
       
