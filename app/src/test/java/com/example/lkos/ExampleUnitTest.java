@@ -1,6 +1,9 @@
 package com.example.lkos;
 
+import android.content.SharedPreferences;
+
 import com.example.Controllers.DataController;
+import com.example.Controllers.SharedPreferenceController;
 import com.example.Models.Object;
 import com.example.Models.Trip;
 import com.google.gson.Gson;
@@ -24,15 +27,16 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
-    /*
+
     @Test
     public void parseTripTest() throws JSONException {
         DataController testable = new DataController();
-        Gson gson = new Gson();
-        Trip testTrip = new Trip (13,"Ajaja", DateTime.parse("2020-04-13T00:00:00"),
-                DateTime.parse("2020-04-22T00:00:00"), "2", "Ajajajajajajaja", 520);
-        String JSON = gson.toJson(testTrip);
-        Trip result= testable.parseTrip(JSON);
+        //Gson gson = new Gson();
+        Trip testTrip = new Trip (13,"Warsaw weekend tour", "2020-04-13T00:00:00",
+                "2020-04-22T00:00:00", 2, "Brand new weekend tour for visiting the city of Warsaw and the region around it", 25);
+        //String JSON = gson.toJson(testTrip);
+        Trip result= testable.parseTrip(
+                "{"+'"'+"tripId"+'"'+": 13, "+'"'+"tripTitle"+'"'+": "+'"'+"Warsaw weekend tour"+'"'+", "+'"'+"startDate"+'"'+": "+'"'+"2020-04-13T00:00:00"+'"'+", "+'"'+"endDate"+'"'+": "+'"'+"2020-04-22T00:00:00"+'"'+", "+'"'+"tripType"+'"'+": 2, "+'"'+"tripDescription"+'"'+": "+'"'+"Brand new weekend tour for visiting the city of Warsaw and the region around it"+'"'+", "+'"'+"capacity"+'"'+": 25}");
         assertEquals(testTrip.getCapacity(), result.getCapacity());
         assertEquals(testTrip.getDescription(), result.getDescription());
         assertEquals(testTrip.getEndDate(), result.getEndDate());
@@ -42,7 +46,7 @@ public class ExampleUnitTest {
         assertEquals(testTrip.getTripId(), result.getTripId());
     }
 
-     */
+
     @Test
     public void parseObjectTest() throws JSONException {
         DataController testable = new DataController();
@@ -55,4 +59,13 @@ public class ExampleUnitTest {
         assertEquals(testObject.getObjectTitle(), result.getObjectTitle());
         assertEquals(testObject.getObjectType(), result.getObjectType());
     }
+    /*
+    @Test
+    public void testSharedPref(){
+        SharedPreferenceController testable = new SharedPreferenceController();
+        testable.saveToken("Token");
+        assertEquals(testable.returnToken(),"Token");
+    }
+
+     */
 }

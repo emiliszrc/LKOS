@@ -6,15 +6,15 @@ public class Trip {
     private int tripId;
     private String tripTitle;
     private DateTime startDate, endDate;
-    private String type;
+    private int type;
     private String description;
     private int capacity;
 
-    public Trip(int tripId, String tripTitle, DateTime startDate, DateTime endDate, String type, String description, int capacity) {
+    public Trip(int tripId, String tripTitle, String startDate, String endDate, int type, String description, int capacity) {
         this.tripId = tripId;
         this.tripTitle = tripTitle;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = DateTime.parse(startDate);
+        this.endDate = DateTime.parse(endDate);
         this.type = type;
         this.description = description;
         this.capacity = capacity;
@@ -36,7 +36,7 @@ public class Trip {
         return endDate;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 

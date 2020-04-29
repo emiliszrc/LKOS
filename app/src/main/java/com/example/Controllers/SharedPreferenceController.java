@@ -22,7 +22,7 @@ public class SharedPreferenceController extends AppCompatActivity {
     public String returnToken(){
         String token = pref.getString("token", null);
         if (token ==null)
-            return "This bitch empty";
+            return "empty";
         return token;
     }
 
